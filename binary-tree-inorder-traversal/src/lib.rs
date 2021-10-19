@@ -29,7 +29,7 @@ impl Solution {
         while cur != None || !stack.is_empty() {
             while cur != None {
                 stack.push(cur.clone());
-                cur = match &(*cur.unwrap()).borrow().left {
+                cur = match cur.unwrap()).borrow().left {
                     Some(l) => Some(l.clone()),
                     None => None,
                 };
