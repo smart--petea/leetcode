@@ -40,24 +40,22 @@ impl Solution {
             return None;
         }
 
-        fn to_bst(head: Option<Box<ListNode>>, tail: Option<Box<ListNode>>) -> Option<Rc<RefCell<TreeNode>>> {
+        fn to_bst(head: &Option<Box<ListNode>>, tail: &Option<Box<ListNode>>) -> Option<Rc<RefCell<TreeNode>>> {
             if head == tail {
                 return None;
             }
 
-            let mut slow = head.clone();
-            let mut fast = head.clone();
-            while fast != tail && fast.as_ref().unwrap().next != tail {
-                let fast_next = fast.as_ref().unwrap().next.clone();
-                fast = fast_next.unwrap().next.clone();
-
-                slow = slow.as_ref().unwrap().next.clone();
+            let mut slow = head;
+            let mut fast = head;
+            while fast != tail && &fast.as_ref().unwrap().next != tail {
+                fast = &fast.as_ref().unwrap().next.as_ref().unwrap().next;
+                slow = &slow.as_ref().unwrap().next;
             }
 
-            let right = to_bst(slow.as_ref().unwrap().next.clone(), tail);
-            let left = to_bst(head, slow.clone());
+            let right = to_bst(&slow.as_ref().unwrap().next, &tail);
+            let left = to_bst(&head, &slow);
             let thead = TreeNode{
-                val: slow.unwrap().val,
+                val: slow.as_ref().unwrap().val,
                 right: right,
                 left: left,
             };
@@ -65,7 +63,7 @@ impl Solution {
             Some(Rc::new(RefCell::new(thead)))
         }
 
-        to_bst(head, None)
+        to_bst(&head, &None)
     }
 }
 #[cfg(test)]
