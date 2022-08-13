@@ -11,32 +11,23 @@ impl ParkingSystem {
     }
     
     fn add_car(&mut self, car_type: i32) -> bool {
-        match car_type {
-            1 => {
-                if self.0 == 0 {
-                    return false;
-                }
+        let field_reference = match car_type {
+            1 => &mut self.0,
+            2 => &mut self.1,
+            3 => &mut self.2,
+            _ => panic!("")
+        };
 
-                self.0 -= 1;
+        Self::try_decrement(field_reference)
+    }
+
+    fn try_decrement(field: &mut i32) -> bool {
+        match field {
+            0 => false,
+            _ => {
+                *field -= 1;
                 true
             }
-            2 => {
-                if self.1 == 0 {
-                    return false;
-                }
-
-                self.1 -= 1;
-                true
-            }
-            3 => {
-                if self.2 == 0 {
-                    return false;
-                }
-
-                self.2 -= 1;
-                true
-            }
-            _ => panic!("not existent car_type {}", car_type)
         }
     }
 }
